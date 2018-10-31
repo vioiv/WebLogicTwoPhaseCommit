@@ -2,7 +2,6 @@ package com.weblogic.twophasecommit;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.Statement;
 
 import javax.naming.InitialContext;
@@ -41,30 +40,18 @@ public class InsertTwoPhase extends HttpServlet {
 			userTransaction = (UserTransaction) initialContext.lookup("java:comp/UserTransaction");
 			userTransaction.begin();
 
-			
 			DataSource dataSource1 = (DataSource)initialContext.lookup("MYSQL");
 			Connection connection1 = dataSource1.getConnection();
 			
 			Statement statement1 = connection1.createStatement();
 			statement1.executeUpdate("insert into test values('testtwo','col77')");
-			
-//			ResultSet resultSet1 = statement1.executeQuery("select * from test");
-//			while(resultSet1.next()) {
-//				String memberName1 = resultSet1.getString("test1");
-//				System.out.println(memberName1);
-//			}
-			
+
 			DataSource dataSource = (DataSource)initialContext.lookup("DB1");
 			Connection connection = dataSource.getConnection();
 			
 			Statement statement = connection.createStatement();
 			statement.executeUpdate("insert into tyx_member values(41,'김정훈','1980-11-30','FW',null,'99','한국')");
-			
-//			ResultSet resultSet = statement.executeQuery("select * from tyx_member");
-//			while(resultSet.next()) {
-//				String memberName = resultSet.getString("V_MEMBER_NM");
-//				System.out.println(memberName);
-//			}
+
 			userTransaction.commit();
 		} catch (Exception e) {
 			try {
